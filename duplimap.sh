@@ -23,14 +23,14 @@ for line in $(cat $2); do
         yoffset=${array[2]}
         x=$(( ($3 * $index) % $width))
         y=$(($4 * (($3 * $index) / $width) ))
+        target=tmp_${name}/$(printf "%03d" ${num}).png
         # cut out
-        echo convert -background none $1 -crop $3x$4+$((x-xoffset))+$((y-yoffset)) tmp_${name}/${num}.png
-        convert -background none $1 -crop $3x$4+$((x-xoffset))+$((y-yoffset)) tmp_${name}/${num}.png
+        convert -background none $1 -crop $3x$4+$((x-xoffset))+$((y-yoffset)) ${target}
         # fix size if we lef the area of the image
-        convert -background none -extent $3x$4 tmp_${name}/${num}.png tmp_${name}/${num}.png 
+        convert -background none -extent $3x$4 ${target} ${target} 
         col=$((col+1))
         num=$((num+1))
     done
     row=$((row+1))
 done
-montage -background none -tile ${col}x${row} tmp_${name}/*.png ${name}_${animation}.png
+montage -background none -tile ${col}x${row} tmp_${name}/*.png -geometry +0+0 ${name}_${animation}.png
