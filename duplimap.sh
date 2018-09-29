@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # csv cell syntax is: index;xoffset;yoffset
 if [ "$#" -lt 4 ]; then
     echo "$0 <file.png> <animation.map.csv> <tile width> <tile height>"
