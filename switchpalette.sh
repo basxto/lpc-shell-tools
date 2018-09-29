@@ -3,7 +3,7 @@
 # the index within the palette matters
 if [ "$#" -lt 3 ]; then
     echo "$0 <file.png> <from.gpl> <to.gpl>"
-    echo "Example: $0 male_walkcycle.png palettes/skin/ivory.gpl palettes/skin/coffe.gpl"
+    echo "Example: $0 male_human_head_ivory.png palettes/skin/ivory.gpl palettes/skin/coffee.gpl"
     echo "This needs imagemagick installed"
     exit 1
 fi

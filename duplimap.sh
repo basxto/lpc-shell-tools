@@ -1,8 +1,9 @@
 #!/bin/bash
 # csv cell syntax is: index;xoffset;yoffset
+# csv is a primitive spreadsheet format
 if [ "$#" -lt 4 ]; then
     echo "$0 <file.png> <animation.map.csv> <tile width> <tile height>"
-    echo "Example: $0 hair.png animation/walkcycle.map.csv 64 64"
+    echo "Example: $0 male_human_head_ivory.png animation/head/male/walkcycle.map.csv 64 64"
     echo "This needs imagemagick installed"
     exit 1
 fi
