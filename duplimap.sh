@@ -14,7 +14,8 @@ row=0
 num=0
 name=$(echo $1 | sed -E "s/\.png//g")
 animation=$(basename $3 | sed -E "s/\.map\.csv//g")
-mkdir -p tmp_${name}
+tmp=tmp_$(echo $2 | sed -E "s/\.png//g")
+mkdir -p ${tmp}
 for line in $(cat $3); do
     col=0
     for cell in $(echo ${line} | tr ',' ' '); do
@@ -24,7 +25,7 @@ for line in $(cat $3); do
         yoffset=${array[2]}
         x=$(( ($4 * $index) % $width))
         y=$(($5 * (($4 * $index) / $width) ))
-        target=tmp_${name}/$(printf "%03d" ${num}).png
+        target=${tmp}/$(printf "%03d" ${num}).png
         # cut out
         convert -background none $1 -crop $4x$5+$((x-xoffset))+$((y-yoffset)) ${target}
         # fix size if we left the area of the image
@@ -44,4 +45,4 @@ for line in $(cat $3); do
     done
     row=$((row+1))
 done
-montage -background none -tile ${col}x${row} tmp_${name}/*.png -geometry +0+0 $2
+montage -background none -tile ${col}x${row} ${tmp}/*.png -geometry +0+0 $2
