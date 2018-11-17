@@ -1,0 +1,4 @@
+male_human_head_ivory.png is based on ["male hurt animation" and "male spellcasting animation"](http://lpc.opengameart.org/static/lpc-style-guide/assets.html) of [Stephen Challener (AKA Redshrike)](https://opengameart.org/users/redshrike)
+shoot.png is based on [masks_male.png](https://github.com/jrconway3/Universal-LPC-spritesheet/blob/master/_build/hair/masks_male.png) of [Jaidyn Reiman (AKA JRConway3)](https://opengameart.org/users/jaidynreiman)
+
+Both are dual licensed under [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html) and [Creative Commons BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/)
