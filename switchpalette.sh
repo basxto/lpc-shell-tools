@@ -22,7 +22,7 @@ from=( $(parse_gpl $3) )
 to=( $(parse_gpl $4) )
 # get smallest array size
 size=$(echo -e "${#from[@]}\n${#to[@]}" | sort -n | head -n 1)
-cmd="convert $1"
+cmd="magick convert $1"
 for i in $(seq 0 $((size-1))); do
     # fill must come first
     cmd="${cmd} -fill ${to[i]} -opaque ${from[i]}";

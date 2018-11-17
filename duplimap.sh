@@ -27,7 +27,7 @@ for line in $(cat $3); do
         y=$(($5 * (($4 * $index) / $width) ))
         target=${tmp}/$(printf "%03d" ${num}).png
         # cut out
-        convert -background none $1 -crop $4x$5+$((x-xoffset))+$((y-yoffset)) ${target}
+        magick convert -background none $1 -crop $4x$5+$((x-xoffset))+$((y-yoffset)) ${target}
         # fix size if we left the area of the image
         if [ "${y}" -gt 0 ];then
             gravity="north"
@@ -39,10 +39,10 @@ for line in $(cat $3); do
         else
             gravity="${gravity}east"
         fi
-        convert -background none -gravity ${gravity} -extent $4x$5 ${target} ${target} 
+        magick convert -background none -gravity ${gravity} -extent $4x$5 ${target} ${target} 
         col=$((col+1))
         num=$((num+1))
     done
     row=$((row+1))
 done
-montage -background none -tile ${col}x${row} ${tmp}/*.png -geometry +0+0 $2
+magick montage -background none -tile ${col}x${row} ${tmp}/*.png -geometry +0+0 $2
