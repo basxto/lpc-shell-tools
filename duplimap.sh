@@ -1,8 +1,9 @@
 #!/bin/bash
 # csv cell syntax is: index;xoffset;yoffset
 # index;; defaults to index;0;0
-# #index is frame by original column, but with the current row
-# -index mirrors the tile horizontally
+# :in:dex in is the row and dex the column
+# #index is <current row>:index
+# -index mirrors the tile horizontally (-# and -: are valid)
 # csv is a primitive spreadsheet format
 if [ "$#" -lt 5 ]; then
     echo "$0 <in.png> <out.png> <animation.map.csv> <tile width> <tile height>"
@@ -32,12 +33,12 @@ for line in $(cat $3); do
             index="${index:1}"
         fi
         case $index in
+         ':'*)
+            coords=( $(echo ${index:1} | tr ':' ' ') )
+            index=$((${coords[0]} * (${width}/${tilewidth}) + ${coords[1]} ))
+            ;;
          '#'*)
             index=$((${row} * (${width}/${tilewidth}) + ${index:1} ))
-            ;;
-         -*)
-            mirror="-flop"
-            index="${index:1}"
             ;;
         esac
         xoffset=${array[1]:-0}
