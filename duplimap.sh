@@ -22,7 +22,8 @@ name=$(echo $1 | sed -E "s/\.png//g")
 animation=$(basename $3 | sed -E "s/\.map\.csv//g")
 tmp=tmp_$(echo $2 | sed -E "s/\.png//g")
 mkdir -p ${tmp}
-for line in $(cat $3); do
+# tr -d ' ' ignores spaces in the csv
+for line in $(cat $3 | tr -d ' '); do
     col=0
     for cell in $(echo ${line} | tr ',' ' '); do
         array=( $(echo ${cell} | tr ';' ' ') )
