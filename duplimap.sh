@@ -20,14 +20,19 @@ for line in $(cat $3); do
     col=0
     for cell in $(echo ${line} | tr ',' ' '); do
         array=( $(echo ${cell} | tr ';' ' ') )
+        mirror=""
         index=${array[0]}
+        if [ "${index:0:1}" == "-" ]; then
+            mirror="-flop"
+            index="${index:1}"
+        fi
         xoffset=${array[1]}
         yoffset=${array[2]}
         x=$(( ($4 * $index) % $width))
         y=$(($5 * (($4 * $index) / $width) ))
         target=${tmp}/$(printf "%03d" ${num}).png
         # cut out
-        magick convert -background none $1 -crop $4x$5+$((x-xoffset))+$((y-yoffset)) ${target}
+        magick convert -background none $1 -crop $4x$5+$((x-xoffset))+$((y-yoffset)) ${mirror} ${target}
         # fix size if we left the area of the image
         if [ "${y}" -gt 0 ];then
             gravity="north"
