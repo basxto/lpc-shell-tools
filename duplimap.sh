@@ -1,5 +1,8 @@
 #!/bin/bash
 # csv cell syntax is: index;xoffset;yoffset
+# index;; defaults to index;0;0
+# #index is frame by original column, but with the current row
+# -index mirrors the tile horizontally
 # csv is a primitive spreadsheet format
 if [ "$#" -lt 5 ]; then
     echo "$0 <in.png> <out.png> <animation.map.csv> <tile width> <tile height>"
@@ -10,6 +13,8 @@ fi
 dimensions=( $(file $1 | grep -Eo "[[:digit:]]* x [[:digit:]]*") )
 width=${dimensions[0]}
 height=${dimensions[2]}
+tilewidth=$4
+tileheight=$5
 row=0
 num=0
 name=$(echo $1 | sed -E "s/\.png//g")
@@ -26,13 +31,22 @@ for line in $(cat $3); do
             mirror="-flop"
             index="${index:1}"
         fi
-        xoffset=${array[1]}
-        yoffset=${array[2]}
-        x=$(( ($4 * $index) % $width))
-        y=$(($5 * (($4 * $index) / $width) ))
+        case $index in
+         '#'*)
+            index=$((${row} * (${width}/${tilewidth}) + ${index:1} ))
+            ;;
+         -*)
+            mirror="-flop"
+            index="${index:1}"
+            ;;
+        esac
+        xoffset=${array[1]:-0}
+        yoffset=${array[2]:-0}
+        x=$(( (${tilewidth} * $index) % $width))
+        y=$((${tileheight} * ((${tilewidth} * $index) / $width) ))
         target=${tmp}/$(printf "%03d" ${num}).png
         # cut out
-        magick convert -background none $1 -crop $4x$5+$((x-xoffset))+$((y-yoffset)) ${mirror} ${target}
+        magick convert -background none $1 -crop ${tilewidth}x${tileheight}+$((x-xoffset))+$((y-yoffset)) ${mirror} ${target}
         # fix size if we left the area of the image
         if [ "${y}" -gt 0 ];then
             gravity="north"
@@ -44,7 +58,7 @@ for line in $(cat $3); do
         else
             gravity="${gravity}east"
         fi
-        magick convert -background none -gravity ${gravity} -extent $4x$5 ${target} ${target} 
+        magick convert -background none -gravity ${gravity} -extent ${tilewidth}x${tileheight} ${target} ${target} 
         col=$((col+1))
         num=$((num+1))
     done
